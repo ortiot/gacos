@@ -19,8 +19,14 @@ type profile struct {
 }
 
 type config struct {
+	App     app `yaml:"app"`
 	//这里写你的配置结构体
 }
+
+type app struct {
+	Port    int `yaml:"port"`
+}
+
 
 // init
 func init() {
