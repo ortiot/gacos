@@ -3,6 +3,7 @@ package gacos
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
@@ -14,26 +15,37 @@ func (g *gacos) GetConfig(param *CfgParam) (config string, err error) {
 	if param == nil || param.Group == "" || param.DataId == "" {
 		return "", errors.New("dataId 和 group 不能为null")
 	}
-	//var tenantParam = ""
-	//if param.Tenant != "" {
-	//	tenantParam = "&tenant=" + param.Tenant
-	//}
-	if resp, err := http.Get(g.endPoint + "/nacos/v1/cs/configs?dataId=" + param.DataId + "&group=" + param.Group); err != nil {
+	var tenantParam = ""
+	if param.Tenant != "" {
+		tenantParam = "&tenant=" + param.Tenant+"&show=all"
+	}
+	if resp, err := http.Get(g.endPoint + "/nacos/v1/cs/configs?dataId=" + param.DataId + "&group=" + param.Group+tenantParam); err != nil {
 		return "", err
 	} else {
 		if resp.StatusCode != 200 {
-			return "", errors.New("errcode is " + resp.Status)
+			return "", errors.New(errStatusTostring(resp.StatusCode))
 		}
 		defer resp.Body.Close()
-		b := make([]byte, 2<<10)
+		b := make([]byte, 1<<12)
 		n, err := resp.Body.Read(b)
 		if err != nil && err != io.EOF {
 			return "", err
 		}
+		content:=string(b[:n])
+		if param.Tenant!="" {
+			res:=&cfgResp{}
+			if err:=json.Unmarshal(b[:n],res);err!=nil{
+				return "",err
+			}
+			if res.Content=="" {
+				return "",nil
+			}
+			content=res.Content
+		}
 		hash := md5.New()
-		hash.Write(b[:n])
+		hash.Write([]byte(content))
 		g.cacheMd5 = hex.EncodeToString(hash.Sum(nil))
-		return string(b[:n]), nil
+		return content, nil
 	}
 }
 

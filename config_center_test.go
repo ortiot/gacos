@@ -10,7 +10,7 @@ import (
 
 func TestGetConfig(t *testing.T) {
 	g := SingleGacos("http://192.168.48.121:8848")
-	config, err := g.GetConfig(&CfgParam{DataId: "springboot2-nacos-config", Group: "DEFAULT_GROUP"})
+	config, err := g.GetConfig(&CfgParam{DataId: "chogolisa-dev", Group: "DEFAULT_GROUP",Tenant:"7bdd7e55-f0db-4e7b-a3ca-9a360283360c"})
 	if err != nil {
 		t.Log(err.Error())
 		t.Fail()
