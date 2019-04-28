@@ -4,14 +4,13 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"errors"
-	"gacos/param"
 	"io"
 	"net/http"
 	"strings"
 	"time"
 )
 
-func (g *gacos) GetConfig(param *param.CfgParam) (config string, err error) {
+func (g *gacos) GetConfig(param *CfgParam) (config string, err error) {
 	if param == nil || param.Group == "" || param.DataId == "" {
 		return "", errors.New("dataId 和 group 不能为null")
 	}
@@ -38,7 +37,7 @@ func (g *gacos) GetConfig(param *param.CfgParam) (config string, err error) {
 	}
 }
 
-func (g *gacos) ListenConfig(param *param.CfgParam, f func(isupdate bool, err error)) {
+func (g *gacos) ListenConfig(param *CfgParam, f func(isupdate bool, err error)) {
 	go func() {
 		tick := time.Tick(30 * time.Second)
 		for range tick {
@@ -47,7 +46,7 @@ func (g *gacos) ListenConfig(param *param.CfgParam, f func(isupdate bool, err er
 	}()
 }
 
-func (g *gacos) listenConfig(param *param.CfgParam) (isupdate bool, err error) {
+func (g *gacos) listenConfig(param *CfgParam) (isupdate bool, err error) {
 	if param == nil || param.Group == "" || param.DataId == "" {
 		return false, errors.New("dataId 和 group 不能为null")
 	}

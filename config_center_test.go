@@ -4,14 +4,13 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"fmt"
-	"gacos/param"
 	"testing"
 	"time"
 )
 
 func TestGetConfig(t *testing.T) {
 	g := SingleGacos("http://192.168.48.121:8848")
-	config, err := g.GetConfig(&param.CfgParam{DataId: "springboot2-nacos-config", Group: "DEFAULT_GROUP"})
+	config, err := g.GetConfig(&CfgParam{DataId: "springboot2-nacos-config", Group: "DEFAULT_GROUP"})
 	if err != nil {
 		t.Log(err.Error())
 		t.Fail()
@@ -25,7 +24,7 @@ func TestGetConfig(t *testing.T) {
 
 func TestListenConfig(t *testing.T) {
 	g := SingleGacos("http://127.0.0.1:8848")
-	p:=&param.CfgParam{DataId:"springboot2-nacos-config",Group:"DEFAULT_GROUP"}
+	p:=&CfgParam{DataId:"springboot2-nacos-config",Group:"DEFAULT_GROUP"}
 	g.ListenConfig(p, func(isupdate bool, err error) {
 		if err != nil {
 			fmt.Println(err.Error())
@@ -39,5 +38,5 @@ func TestListenConfig(t *testing.T) {
 			fmt.Println(cfg)
 		}
 	})
-	time.Sleep(30*time.Second)
+	time.Sleep(300*time.Second)
 }

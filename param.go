@@ -1,4 +1,4 @@
-package param
+package gacos
 
 type CfgParam struct {
 	DataId string
