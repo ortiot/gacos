@@ -4,6 +4,7 @@ import "sync"
 
 type gacos struct {
 	endPoint string
+	cacheMd5 string
 }
 
 var (
