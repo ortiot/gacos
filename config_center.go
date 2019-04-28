@@ -63,7 +63,7 @@ func (g *gacos) listenConfig(param *CfgParam) (isupdate bool, err error) {
 		return false, errors.New("dataId 和 group 不能为null")
 	}
 	client := http.Client{}
-	bstr := param.DataId + string(rune(2)) + param.Group + string(rune(2)) + g.cacheMd5 + string(rune(2)) + string(rune(1))
+	bstr := param.DataId + string(rune(2)) + param.Group + string(rune(2)) + g.cacheMd5 + string(rune(2)) +param.Tenant+ string(rune(1))
 	bstr = "Listening-Configs=" + bstr
 	rm := make(map[string]string)
 	rm["Listening-Configs"] = bstr

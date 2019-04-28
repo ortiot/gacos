@@ -24,7 +24,8 @@ func TestGetConfig(t *testing.T) {
 
 func TestListenConfig(t *testing.T) {
 	g := SingleGacos("http://127.0.0.1:8848")
-	p:=&CfgParam{DataId:"springboot2-nacos-config",Group:"DEFAULT_GROUP"}
+	//p:=&CfgParam{DataId:"springboot2-nacos-config",Group:"DEFAULT_GROUP"}
+	p:=&CfgParam{DataId: "chogolisa-dev", Group: "DEFAULT_GROUP",Tenant:"7bdd7e55-f0db-4e7b-a3ca-9a360283360c"}
 	g.ListenConfig(p, func(isupdate bool, err error) {
 		if err != nil {
 			fmt.Println(err.Error())
